@@ -7,8 +7,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
-      background-color: #0f0f0f;
-      color: #ffffff;
+      background-color: #121212;
+      color: #e0e0e0;
       font-family: 'Segoe UI', sans-serif;
       display: flex;
       flex-direction: column;
@@ -22,14 +22,17 @@
     h1 {
       font-size: 32px;
       color: #00ff99;
+      margin-bottom: 20px;
     }
     input {
       width: 90%;
       max-width: 500px;
       padding: 12px;
       font-size: 16px;
-      border-radius: 10px;
-      border: none;
+      border-radius: 8px;
+      border: 1px solid #444;
+      background-color: #1e1e1e;
+      color: #fff;
       margin-bottom: 15px;
     }
     button {
@@ -37,7 +40,7 @@
       color: #000;
       border: none;
       padding: 12px 24px;
-      border-radius: 10px;
+      border-radius: 8px;
       font-size: 16px;
       cursor: pointer;
       box-shadow: 0 0 10px #00ff99;
@@ -51,9 +54,15 @@
       margin-top: 20px;
       word-break: break-word;
       font-size: 16px;
+      color: #9be9a8;
     }
     a {
       color: #00ffcc;
+    }
+    #status {
+      font-size: 18px;
+      color: #f0c674;
+      margin-top: 10px;
     }
   </style>
 </head>
@@ -61,24 +70,30 @@
   <h1>CodexBypass</h1>
   <input type="text" id="urlInput" placeholder="Paste Codex Key URL here">
   <button onclick="bypass()">Bypass</button>
+  <div id="status"></div>
   <div id="result"></div>
 
   <script>
     async function bypass() {
       const input = document.getElementById('urlInput').value;
       const resultDiv = document.getElementById('result');
-      resultDiv.innerHTML = "Bypassing...";
+      const statusDiv = document.getElementById('status');
+      
+      statusDiv.innerHTML = "Bypassing... Please wait.";
+      resultDiv.innerHTML = "";
 
       try {
         const response = await fetch(`https://bypass.bot.nu/bypass2?url=${encodeURIComponent(input)}`);
         const data = await response.json();
+        
         if (data && data.destination) {
-          resultDiv.innerHTML = \`<strong>Bypassed Link:</strong><br><a href="\${data.destination}" target="_blank">\${data.destination}</a>\`;
+          statusDiv.innerHTML = "Bypassed Successfully!";
+          resultDiv.innerHTML = `<strong>Bypassed Link:</strong><br><a href="${data.destination}" target="_blank">${data.destination}</a>`;
         } else {
-          resultDiv.innerHTML = "Failed to bypass. Make sure it's a valid Codex link.";
+          statusDiv.innerHTML = "Failed to bypass. Invalid link or server error.";
         }
       } catch (e) {
-        resultDiv.innerHTML = "Error while bypassing. Try again later.";
+        statusDiv.innerHTML = "Error during bypass. Try again later.";
       }
     }
   </script>
